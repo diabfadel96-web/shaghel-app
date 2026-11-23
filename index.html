@@ -229,6 +229,54 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js');
   });
 }
+    async function loadJobs() {
+  const { data, error } = await supabaseClient
+    .from('jobs')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Jobs error:', error);
+    return;
+  }
+
+  const firstJob = document.querySelector('.job');
+  if (!firstJob) return;
+
+  const container = firstJob.parentElement;
+  container.querySelectorAll('.job').forEach(job => job.remove());
+
+  data.forEach(job => {
+    const card = document.createElement('article');
+    card.className = 'job';
+    card.dataset.category = job.category || '';
+
+    const info = document.createElement('div');
+    info.innerHTML = `
+      <div class="job-top">
+        <div class="job-icon">💼</div>
+        <div>
+          <h3></h3>
+          <div class="muted"></div>
+        </div>
+      </div>
+      <p class="muted"></p>
+      <div class="job-info">
+        <span>📍 ${job.location || 'لبنان'}</span>
+        <span class="money">${job.salary || ''}</span>
+      </div>
+    `;
+
+    info.querySelector('h3').textContent = job.title || '';
+    info.querySelector('.job-top .muted').textContent = job.company || '';
+    info.querySelector('p').textContent = job.description || '';
+
+    card.appendChild(info);
+    container.appendChild(card);
+  });
+}
+
+loadJobs();
 </script>
 </body>
 </html>
