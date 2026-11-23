@@ -191,7 +191,12 @@ button{
     <button onclick="alert('ملفك الشخصي قيد التطوير')">👤 حسابي</button>
   </nav>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://bysbccjrewqfsqwopogv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_hcJpY9eW6AwXmfvfF6mKwg_dud6qlRR';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</script>
 <script>
 function apply(btn){
   document.getElementById('message').textContent=
