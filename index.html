@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>SHAGHEL | شغّل</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#0b1120;color:#f5f7fb;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.app{max-width:480px;margin:auto;min-height:100vh;padding:20px 16px 90px}
+header{display:flex;align-items:center;justify-content:space-between;padding:10px 0 25px}
+.logo{font-size:27px;font-weight:900;letter-spacing:1px}
+.logo span{color:#36d399}
+.avatar{width:42px;height:42px;border-radius:50%;background:#1e293b;display:grid;place-items:center}
+.welcome{font-size:14px;color:#aab5c7}
+h1{font-size:26px;margin:8px 0 20px;line-height:1.5}
+.hero{
+  padding:22px;border-radius:22px;
+  background:linear-gradient(135deg,#087f5b,#123c54);
+  margin-bottom:25px;
+}
+.hero h2{font-size:21px;margin:0 0 10px}
+.hero p{color:#e0f2ec;font-size:14px;line-height:1.8}
+button{
+  border:0;border-radius:12px;padding:13px 18px;
+  font-size:15px;font-weight:bold;cursor:pointer;
+}
+.primary{background:#36d399;color:#071c16}
+.search{
+  display:flex;background:#172235;border:1px solid #263449;
+  border-radius:14px;padding:4px;margin:18px 0;
+}
+.search input{
+  background:transparent;border:0;outline:0;color:white;
+  padding:12px;width:100%;font-size:15px;
+}
+.search button{background:#36d399}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 0 14px}
+.section-title h2{font-size:18px}
+.section-title span{color:#36d399;font-size:13px}
+.categories{display:flex;gap:10px;overflow:auto;padding-bottom:8px}
+.category{
+  flex:0 0 auto;background:#172235;border:1px solid #263449;
+  border-radius:14px;padding:13px 17px;color:#fff;font-size:14px;
+}
+.job{
+  background:#121d30;border:1px solid #233149;
+  border-radius:18px;padding:17px;margin-bottom:13px;
+}
+.job-top{display:flex;align-items:center;gap:12px}
+.job-icon{
+  width:48px;height:48px;border-radius:14px;background:#1e3045;
+  display:grid;place-items:center;font-size:22px;
+}
+.job h3{margin:0 0 5px;font-size:16px}
+.muted{color:#9eabc0;font-size:13px}
+.job-info{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.job-info span{font-size:12px;color:#c2ccda;background:#1b2940;padding:7px 10px;border-radius:9px}
+.money{color:#36d399;font-weight:bold}
+.job button{width:100%;background:#1d3045;color:#36d399;margin-top:5px}
+.bottom{
+ position:fixed;bottom:0;left:0;right:0;
+ background:#101827;border-top:1px solid #263449;
+ display:flex;justify-content:center;
+}
+.nav{max-width:480px;width:100%;display:flex;justify-content:space-around;padding:12px 4px}
+.nav button{background:none;color:#aab5c7;padding:10px;font-size:12px}
+.nav button.active{color:#36d399}
+.hidden{display:none}
+#message{color:#36d399;text-align:center;margin-top:15px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">SHAG<span>G</span>EL</div>
+  <div class="avatar">👤</div>
+</header>
+
+<div class="welcome">أهلاً فيك بمنصة شغّل 🇱🇧</div>
+<h1>خلّينا نلاقي<br>شغل إلك.</h1>
+
+<section class="hero">
+  <h2>فرصتك ممكن تبدأ اليوم.</h2>
+  <p>اكتشف فرص عمل ومهام حقيقية، وابني خبرتك خطوة بخطوة.</p>
+  <button class="primary" onclick="showJobs()">اكتشف فرص الشغل</button>
+</section>
+
+<div class="search">
+  <input id="searchInput" placeholder="شو نوع الشغل اللي عم تدور عليه؟">
+  <button onclick="searchJobs()">بحث</button>
+</div>
+
+<div class="section-title">
+  <h2>مجالات الشغل</h2>
+</div>
+
+<div class="categories">
+  <button class="category" onclick="filterJobs('الكل')">الكل</button>
+  <button class="category" onclick="filterJobs('تصميم')">🎨 تصميم</button>
+  <button class="category" onclick="filterJobs('تسويق')">📱 تسويق</button>
+  <button class="category" onclick="filterJobs('تصوير')">📸 تصوير</button>
+  <button class="category" onclick="filterJobs('إدخال')">💻 إدخال بيانات</button>
+</div>
+
+<div class="section-title" id="jobsSection">
+  <h2>فرص متاحة</h2>
+  <span>فرص تجريبية</span>
+</div>
+
+<div id="jobs">
+  <article class="job" data-category="تصميم">
+    <div class="job-top">
+      <div class="job-icon">🎨</div>
+      <div>
+        <h3>تصميم منشورات سوشيال ميديا</h3>
+        <div class="muted">عمل عن بُعد</div>
+      </div>
+    </div>
+    <div class="job-info">
+      <span>📍 لبنان</span>
+      <span>⏱ مشروع</span>
+      <span class="money">$20</span>
+    </div>
+    <button onclick="apply(this)">قدّم على المهمة</button>
+  </article>
+
+  <article class="job" data-category="تصوير">
+    <div class="job-top">
+      <div class="job-icon">📸</div>
+      <div>
+        <h3>تصوير منتجات لمحل</h3>
+        <div class="muted">عمل ميداني</div>
+      </div>
+    </div>
+    <div class="job-info">
+      <span>📍 بيروت</span>
+      <span>⏱ مهمة</span>
+      <span class="money">$15</span>
+    </div>
+    <button onclick="apply(this)">قدّم على المهمة</button>
+  </article>
+
+  <article class="job" data-category="تسويق">
+    <div class="job-top">
+      <div class="job-icon">📱</div>
+      <div>
+        <h3>إدارة صفحة متجر</h3>
+        <div class="muted">عمل عن بُعد</div>
+      </div>
+    </div>
+    <div class="job-info">
+      <span>📍 لبنان</span>
+      <span>⏱ شهري</span>
+      <span class="money">$150</span>
+    </div>
+    <button onclick="apply(this)">قدّم على المهمة</button>
+  </article>
+
+  <article class="job" data-category="إدخال">
+    <div class="job-top">
+      <div class="job-icon">💻</div>
+      <div>
+        <h3>إدخال بيانات وتنظيم ملفات</h3>
+        <div class="muted">عمل عن بُعد</div>
+      </div>
+    </div>
+    <div class="job-info">
+      <span>📍 لبنان</span>
+      <span>⏱ مشروع</span>
+      <span class="money">$25</span>
+    </div>
+    <button onclick="apply(this)">قدّم على المهمة</button>
+  </article>
+</div>
+
+<div id="message"></div>
+
+</div>
+
+<div class="bottom">
+  <nav class="nav">
+    <button class="active" onclick="home()">🏠 الرئيسية</button>
+    <button onclick="alert('قسم المهام قيد التطوير')">💼 شغل</button>
+    <button onclick="alert('ملفك الشخصي قيد التطوير')">👤 حسابي</button>
+  </nav>
+</div>
+
+<script>
+function apply(btn){
+  document.getElementById('message').textContent=
+  'التقديم الحقيقي رح يتفعّل عند بناء نظام الحسابات.';
+}
+function showJobs(){
+  document.getElementById('jobsSection').scrollIntoView({behavior:'smooth'});
+}
+function searchJobs(){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  document.querySelectorAll('.job').forEach(j=>{
+    j.style.display=j.innerText.toLowerCase().includes(q)?'':'none';
+  });
+}
+function filterJobs(cat){
+  document.querySelectorAll('.job').forEach(j=>{
+    j.style.display=(cat==='الكل'||j.dataset.category===cat)?'':'none';
+  });
+}
+function home(){
+  document.getElementById('searchInput').value='';
+  filterJobs('الكل');
+  document.getElementById('message').textContent='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
