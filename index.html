@@ -361,5 +361,12 @@ async function shaghelLogout() {
   cursor:pointer;
 }
 </style>
+  <script>
+const hash = window.location.hash;
+
+if (hash && hash.includes('access_token')) {
+  window.location.href = 'https://diabfadel96-web.github.io/shaghel-app/';
+}
+</script>
 </body>
 </html>
