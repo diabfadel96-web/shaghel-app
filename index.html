@@ -278,5 +278,66 @@ if ('serviceWorker' in navigator) {
 
 loadJobs();
 </script>
+  <div id="authBox" style="max-width:400px;margin:20px auto;padding:20px;background:#172033;border-radius:16px;color:white;text-align:center">
+  <h2>حساب شغّل</h2>
+  <input id="authName" placeholder="الاسم الكامل" style="width:100%;padding:12px;margin:8px 0;border-radius:8px">
+  <input id="authEmail" type="email" placeholder="البريد الإلكتروني" style="width:100%;padding:12px;margin:8px 0;border-radius:8px">
+  <input id="authPassword" type="password" placeholder="كلمة المرور" style="width:100%;padding:12px;margin:8px 0;border-radius:8px">
+  <select id="authType" style="width:100%;padding:12px;margin:8px 0;border-radius:8px">
+    <option value="job_seeker">باحث عن عمل</option>
+    <option value="employer">صاحب عمل</option>
+  </select>
+  <button onclick="shaghelSignup()" style="width:100%;padding:12px;margin:8px 0">إنشاء حساب</button>
+  <button onclick="shaghelLogin()" style="width:100%;padding:12px;margin:8px 0">تسجيل الدخول</button>
+  <button onclick="shaghelLogout()" style="width:100%;padding:12px;margin:8px 0">تسجيل الخروج</button>
+  <p id="authMessage"></p>
+</div>
+
+<script>
+async function shaghelSignup() {
+  const name = document.getElementById('authName').value.trim();
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const type = document.getElementById('authType').value;
+  const msg = document.getElementById('authMessage');
+
+  if (!name || !email || !password) {
+    msg.textContent = 'يرجى تعبئة جميع الحقول';
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: name,
+        account_type: type
+      }
+    }
+  });
+
+  msg.textContent = error ? error.message : 'تم التسجيل، تحقق من بريدك الإلكتروني';
+}
+
+async function shaghelLogin() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const msg = document.getElementById('authMessage');
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  msg.textContent = error ? error.message : 'تم تسجيل الدخول بنجاح';
+}
+
+async function shaghelLogout() {
+  const { error } = await supabaseClient.auth.signOut();
+  document.getElementById('authMessage').textContent =
+    error ? error.message : 'تم تسجيل الخروج';
+}
+</script>
 </body>
 </html>
