@@ -489,5 +489,11 @@ async function account() {
     'نوع الحساب: ' + (profile?.account_type === 'employer' ? 'صاحب عمل' : 'باحث عن عمل');
 }
 </script> 
+ <script>
+function account() {
+  document.getElementById('accountPage').style.display = 'block';
+  document.getElementById('accountPage').scrollIntoView({behavior:'smooth'});
+}
+</script> 
 </body>
 </html>
