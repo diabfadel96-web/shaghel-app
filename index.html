@@ -373,10 +373,14 @@ if (hash && hash.includes('access_token')) {
 <section id="advertise" style="margin:25px auto;padding:22px;max-width:600px;background:#172033;color:#fff;border-radius:16px;text-align:center;direction:rtl">
   <h2>📢 أعلن معنا</h2>
   <p>خلّي إعلانك يوصل لجمهور أكبر عبر SHAGHEL.</p>
-  <p>أعلن عن تطبيقك أو شركتك أو خدماتك.</p>
-  <a href="mailto:mrfadel372@gmail.com?subject=طلب%20إعلان%20على%20SHAGHEL" style="display:inline-block;background:#22c55e;color:#fff;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:bold">
-    اطلب إعلان
-  </a>
+
+  <form action="mailto:mrfadel372@gmail.com" method="post" enctype="text/plain">
+    <input name="اسم الشركة" placeholder="اسم الشركة أو التطبيق" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
+    <input name="نوع الإعلان" placeholder="شو بدك تعلن؟" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
+    <input name="مدة الإعلان" placeholder="مدة الإعلان (أسبوع أو شهر)" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
+    <input name="وسيلة التواصل" placeholder="إيميل أو رقم الهاتف" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
+    <button type="submit" style="background:#22c55e;color:white;padding:12px 22px;border:0;border-radius:10px;font-weight:bold">إرسال طلب الإعلان</button>
+  </form>
 </section>
 </body>
 </html>
