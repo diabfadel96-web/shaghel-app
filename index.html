@@ -572,6 +572,63 @@ async function account() {
   alert('تم حفظ معلومات الحساب بنجاح ✅');
   await account();
 }
+// هون الصق كود uploadAvatar كامل
+async function uploadAvatar(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if (!user) {
+    alert('يرجى تسجيل الدخول أولاً');
+    return;
+  }
+
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+    alert('اختار صورة JPG أو PNG أو WEBP');
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert('حجم الصورة يجب ألا يتجاوز 2 MB');
+    return;
+  }
+
+  const ext = file.type === 'image/png' ? 'png'
+    : file.type === 'image/webp' ? 'webp' : 'jpg';
+
+  const path = `${user.id}/avatar.${ext}`;
+
+  const { error: uploadError } = await supabaseClient
+    .storage.from('avatars')
+    .upload(path, file, {
+      upsert: true,
+      contentType: file.type
+    });
+
+  if (uploadError) {
+    alert('تعذّر رفع الصورة: ' + uploadError.message);
+    return;
+  }
+
+  const { data: { publicUrl } } = supabaseClient
+    .storage.from('avatars')
+    .getPublicUrl(path);
+
+  const { error: updateError } = await supabaseClient
+    .from('profiles')
+    .update({ avatar_url: publicUrl })
+    .eq('id', user.id);
+
+  if (updateError) {
+    alert('تعذّر حفظ رابط الصورة: ' + updateError.message);
+    return;
+  }
+
+  document.getElementById('accountAvatar').src = publicUrl;
+  alert('تم تحديث صورة الحساب بنجاح ✅');
+  event.target.value = '';
+}
 </script> 
  <script>
 
