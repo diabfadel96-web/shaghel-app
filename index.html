@@ -519,13 +519,12 @@ async function account() {
     .select('*')
     .eq('id', user.id)
     .single();
-
-  if (error) {
-    document.getElementById('accountInfo').textContent =
-      'تعذّر تحميل معلومات الحساب';
-    return;
-  }
-
+if (error) {
+  document.getElementById('accountInfo').textContent =
+    'تعذّر تحميل معلومات الحساب: ' + error.message;
+  return;
+}
+ 
   document.getElementById('editFullName').value =
     profile.full_name || '';
 
