@@ -575,7 +575,10 @@ if (error) {
 async function uploadAvatar(event) {
   const file = event.target.files[0];
   if (!file) return;
-
+alert(
+  'حجم الصورة: ' + file.size +
+  ' بايت\nنوع الصورة: ' + file.type
+);
   const { data: { user } } = await supabaseClient.auth.getUser();
 
   if (!user) {
