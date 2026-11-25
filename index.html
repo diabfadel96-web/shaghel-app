@@ -374,13 +374,49 @@ if (hash && hash.includes('access_token')) {
   <h2>📢 أعلن معنا</h2>
   <p>خلّي إعلانك يوصل لجمهور أكبر عبر SHAGHEL.</p>
 
-  <form action="mailto:mrfadel372@gmail.com" method="post" enctype="text/plain">
-    <input name="اسم الشركة" placeholder="اسم الشركة أو التطبيق" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
-    <input name="نوع الإعلان" placeholder="شو بدك تعلن؟" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
-    <input name="مدة الإعلان" placeholder="مدة الإعلان (أسبوع أو شهر)" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
-    <input name="وسيلة التواصل" placeholder="إيميل أو رقم الهاتف" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
-    <button type="submit" style="background:#22c55e;color:white;padding:12px 22px;border:0;border-radius:10px;font-weight:bold">إرسال طلب الإعلان</button>
+  <form id="advertiseForm">
+    <input id="adCompany" placeholder="اسم الشركة أو التطبيق" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
+    <input id="adType" placeholder="شو بدك تعلن؟" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
+    <input id="adDuration" placeholder="مدة الإعلان (أسبوع أو شهر)" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
+    <input id="adContact" placeholder="إيميل أو رقم الهاتف" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
+
+    <button type="submit" style="background:#22c55e;color:white;padding:12px 22px;border:0;border-radius:10px;font-weight:bold">
+      إرسال طلب الإعلان
+    </button>
   </form>
+
+  <p id="adMessage"></p>
 </section>
+  <script>
+document.getElementById('advertiseForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const btn = this.querySelector('button');
+  btn.disabled = true;
+  btn.textContent = 'جارٍ الإرسال...';
+
+  const { error } = await supabaseClient
+    .from('advertising_requests')
+    .insert([{
+      company_name: document.getElementById('adCompany').value,
+      ad_type: document.getElementById('adType').value,
+      duration: document.getElementById('adDuration').value,
+      contact: document.getElementById('adContact').value
+    }]);
+
+  const msg = document.getElementById('adMessage');
+
+  if (error) {
+    msg.textContent = 'حدث خطأ، حاول مرة أخرى.';
+    console.error(error);
+  } else {
+    msg.textContent = '✅ تم إرسال طلب الإعلان بنجاح!';
+    this.reset();
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'إرسال طلب الإعلان';
+});
+</script>
 </body>
 </html>
