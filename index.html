@@ -602,7 +602,7 @@ const path = `${user.id}/avatar-${Date.now()}.${ext}`;
 const { error: uploadError } = await supabaseClient
   .storage
   .from('avatars')
-  .upload(path, file, {
+  .upload(path, await file.arrayBuffer(), {
     cacheControl: '3600',
     upsert: false,
     contentType: file.type
