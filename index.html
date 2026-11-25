@@ -598,17 +598,16 @@ alert(
 
   const ext = file.type === 'image/png' ? 'png'
     : file.type === 'image/webp' ? 'webp' : 'jpg';
-
   const path = `${user.id}/avatar.${ext}`;
-
-  const { error: uploadError } = await supabaseClient
-    .storage.from('avatars')
-    .upload(path, file, {
-      upsert: true,
-      contentType: file.type
-    });
-
-  if (uploadError) {
+const { error: uploadError } = await supabaseClient
+  .storage
+  .from('avatars')
+  .upload(path, file, {
+    cacheControl: '3600',
+    upsert: false,
+    contentType: file.type
+  });
+    if (uploadError) {
     alert('تعذّر رفع الصورة: ' + uploadError.message);
     return;
   }
