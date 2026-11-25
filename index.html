@@ -501,26 +501,52 @@ async function loadAds() {
 </section>
 <script>
 async function account() {
-  document.querySelector('main')?.style && (document.querySelector('main').style.display = 'none');
+  const main = document.querySelector('main');
+  if (main) main.style.display = 'none';
+
   document.getElementById('accountPage').style.display = 'block';
 
   const { data: { user } } = await supabaseClient.auth.getUser();
 
   if (!user) {
-    document.getElementById('accountInfo').textContent = 'يرجى تسجيل الدخول أولاً';
+    document.getElementById('accountInfo').textContent =
+      'يرجى تسجيل الدخول أولاً';
     return;
   }
 
-  const { data: profile } = await supabaseClient
+  const { data: profile, error } = await supabaseClient
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single();
 
+  if (error) {
+    document.getElementById('accountInfo').textContent =
+      'تعذّر تحميل معلومات الحساب';
+    return;
+  }
+
+  document.getElementById('editFullName').value =
+    profile.full_name || '';
+
+  document.getElementById('editPhone').value =
+    profile.phone || '';
+
+  if (profile.avatar_url) {
+    document.getElementById('accountAvatar').src =
+      profile.avatar_url;
+  }
+
+  const type =
+    profile.account_type === 'employer'
+      ? 'صاحب عمل'
+      : profile.account_type === 'job_seeker'
+        ? 'باحث عن عمل'
+        : 'غير محدد';
+
   document.getElementById('accountInfo').innerHTML =
-    'الاسم: ' + (profile?.full_name || '') + '<br>' +
     'الإيميل: ' + user.email + '<br>' +
-    'نوع الحساب: ' + (profile?.account_type === 'employer' ? 'صاحب عمل' : 'باحث عن عمل');
+    'نوع الحساب: ' + type;
 }
 </script> 
  <script>
