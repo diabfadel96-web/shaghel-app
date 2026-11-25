@@ -548,6 +548,30 @@ async function account() {
     'الإيميل: ' + user.email + '<br>' +
     'نوع الحساب: ' + type;
 }
+  async function saveProfile() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if (!user) {
+    alert('يرجى تسجيل الدخول أولاً');
+    return;
+  }
+
+  const full_name = document.getElementById('editFullName').value.trim();
+  const phone = document.getElementById('editPhone').value.trim();
+
+  const { error } = await supabaseClient
+    .from('profiles')
+    .update({ full_name, phone })
+    .eq('id', user.id);
+
+  if (error) {
+    alert('حدث خطأ أثناء الحفظ: ' + error.message);
+    return;
+  }
+
+  alert('تم حفظ معلومات الحساب بنجاح ✅');
+  await account();
+}
 </script> 
  <script>
 
