@@ -458,13 +458,47 @@ async function loadAds() {
   });
 }
 </script>
- <section id="accountPage" style="display:none;max-width:600px;margin:25px auto;padding:22px;background:#172033;color:white;border-radius:16px;text-align:center;direction:rtl">
-  <h2>👤 حسابي</h2>
-  <p id="accountInfo">جارٍ تحميل معلومات الحساب...</p>
-  <button onclick="home()" style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">الرئيسية</button>
-  <button onclick="shaghelLogout()" style="padding:12px;background:#ef4444;color:white;border:0;border-radius:10px">تسجيل الخروج</button>
-</section>
+<section id="accountPage" style="display:none;max-width:600px;margin:25px auto;padding:22px;background:#172033;color:white;border-radius:16px;text-align:center;direction:rtl">
 
+  <h2>👤 حسابي</h2>
+
+  <img id="accountAvatar"
+       src=""
+       style="width:120px;height:120px;border-radius:50%;object-fit:cover;background:#334155;border:3px solid #22c55e">
+
+  <br><br>
+
+  <input type="file" id="avatarInput" accept="image/jpeg,image/png,image/webp" hidden onchange="uploadAvatar(event)">
+
+  <button onclick="document.getElementById('avatarInput').click()"
+    style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">
+    📷 تغيير الصورة
+  </button>
+
+  <div style="margin-top:20px">
+    <input id="editFullName" placeholder="الاسم الكامل"
+      style="width:90%;padding:12px;margin:8px;border-radius:8px">
+
+    <input id="editPhone" placeholder="رقم الهاتف (اختياري)"
+      style="width:90%;padding:12px;margin:8px;border-radius:8px">
+
+    <button onclick="saveProfile()"
+      style="padding:12px;background:#2563eb;color:white;border:0;border-radius:10px">
+      💾 حفظ التعديلات
+    </button>
+  </div>
+
+  <p id="accountInfo">جارٍ تحميل معلومات الحساب...</p>
+
+  <button onclick="home()" style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">
+    الرئيسية
+  </button>
+
+  <button onclick="shaghelLogout()" style="padding:12px;background:#ef4444;color:white;border:0;border-radius:10px">
+    تسجيل الخروج
+  </button>
+
+</section>
 <script>
 async function account() {
   document.querySelector('main')?.style && (document.querySelector('main').style.display = 'none');
