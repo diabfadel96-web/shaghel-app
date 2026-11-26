@@ -217,6 +217,12 @@ function filterJobs(cat){
   });
 }
 function home(){
+  const main = document.querySelector('main');
+  if (main) main.style.display = '';
+
+  document.querySelector('.bottom').style.display = 'block';
+  document.getElementById('accountPage').style.display = 'none';
+
   document.getElementById('searchInput').value='';
   filterJobs('الكل');
   document.getElementById('message').textContent='';
