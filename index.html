@@ -463,6 +463,22 @@ async function loadAds() {
   });
 }
 </script>
+<section id="jobsPage" style="display:none;max-width:600px;margin:25px auto;padding:22px;background:#172033;color:white;border-radius:16px;text-align:center;direction:rtl">
+
+  <h2>💼 الوظائف المتاحة</h2>
+
+  <button onclick="showJobForm()" style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">
+    ➕ نشر وظيفة
+  </button>
+
+  <div id="jobForm" style="display:none;margin-top:20px">
+  </div>
+
+  <div id="jobsList" style="margin-top:20px">
+    جارٍ تحميل الوظائف...
+  </div>
+
+</section>  
 <section id="accountPage" style="display:none;max-width:600px;margin:25px auto;padding:22px;background:#172033;color:white;border-radius:16px;text-align:center;direction:rtl">
 
   <h2>👤 حسابي</h2>
