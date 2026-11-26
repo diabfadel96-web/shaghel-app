@@ -503,7 +503,7 @@ async function loadAds() {
 async function account() {
   const main = document.querySelector('main');
   if (main) main.style.display = 'none';
-
+document.querySelector('.bottom').style.display = 'none';
   document.getElementById('accountPage').style.display = 'block';
 
   const { data: { user } } = await supabaseClient.auth.getUser();
