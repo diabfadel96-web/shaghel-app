@@ -221,7 +221,7 @@ function home(){
 
   document.querySelector('.bottom').style.display = 'block';
   document.getElementById('accountPage').style.display = 'none';
-
+document.getElementById('jobsPage').style.display = 'none';
   document.getElementById('searchInput').value='';
   filterJobs('الكل');
   document.getElementById('message').textContent='';
@@ -525,7 +525,7 @@ async function account() {
   document.querySelector('.app').style.display = 'none'; 
 document.querySelector('.bottom').style.display = 'none';
   document.getElementById('accountPage').style.display = 'block';
-
+document.getElementById('jobsPage').style.display = 'none';
   const { data: { user } } = await supabaseClient.auth.getUser();
 
   if (!user) {
@@ -652,7 +652,92 @@ const { error: uploadError } = await supabaseClient
 }
 </script> 
  <script>
+function jobsPage() {
+  document.querySelector('.app').style.display = 'none';
+  document.querySelector('.bottom').style.display = 'block';
+  document.getElementById('accountPage').style.display = 'none';
+  document.getElementById('jobsPage').style.display = 'block';
+  loadJobs();
+}
 
+function showJobForm() {
+  document.getElementById('jobForm').style.display = 'block';
+  document.getElementById('jobForm').innerHTML = `
+    <input id="jobTitle" placeholder="عنوان الوظيفة">
+    <input id="jobCompany" placeholder="اسم الشركة">
+    <input id="jobLocation" placeholder="مكان العمل">
+    <input id="jobSalary" placeholder="الراتب">
+    <textarea id="jobDescription" placeholder="تفاصيل الوظيفة"></textarea>
+    <button onclick="publishJob()">نشر الوظيفة</button>
+  `;
+}
+   async function loadJobs() {
+  const box = document.getElementById('jobsList');
+  box.textContent = 'جارٍ تحميل الوظائف...';
+
+  const { data, error } = await supabaseClient
+    .from('jobs')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    box.textContent = 'تعذّر تحميل الوظائف: ' + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    box.textContent = 'ما في وظائف منشورة حالياً.';
+    return;
+  }
+
+  box.innerHTML = data.map(job => `
+    <div style="background:#243247;padding:15px;margin:12px 0;border-radius:12px;text-align:right">
+      <h3>${job.title || ''}</h3>
+      <p>🏢 ${job.company || ''}</p>
+      <p>📍 ${job.location || ''}</p>
+      <p>💰 ${job.salary || 'غير محدد'}</p>
+      <p>${job.description || ''}</p>
+    </div>
+  `).join('');
+}
+   async function publishJob() {
+  const title = document.getElementById('jobTitle').value;
+  const company = document.getElementById('jobCompany').value;
+  const location = document.getElementById('jobLocation').value;
+  const salary = document.getElementById('jobSalary').value;
+  const description = document.getElementById('jobDescription').value;
+
+  if (!title || !company || !location || !description) {
+    alert('يرجى تعبئة المعلومات المطلوبة');
+    return;
+  }
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if (!user) {
+    alert('يرجى تسجيل الدخول أولاً');
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from('jobs')
+    .insert([{
+      title,
+      company,
+      location,
+      salary,
+      description
+    }]);
+
+  if (error) {
+    alert('تعذّر نشر الوظيفة: ' + error.message);
+    return;
+  }
+
+  alert('تم نشر الوظيفة بنجاح');
+  document.getElementById('jobForm').style.display = 'none';
+  loadJobs();
+}
 </script> 
 </body>
 </html>
