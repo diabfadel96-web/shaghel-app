@@ -423,7 +423,7 @@ document.getElementById('advertiseForm').addEventListener('submit', async functi
   btn.textContent = 'إرسال طلب الإعلان';
 });
 </script>
-  <section id="adminAds" style="margin:25px auto;padding:22px;max-width:600px;background:#111827;color:white;border-radius:16px;text-align:center;direction:rtl">
+  <section id="adminAds" style="display:none;margin:25px auto;padding:22px;max-width:600px;background:#111827;color:white;border-radius:16px;text-align:center;direction:rtl">
   <h2>🔐 طلبات الإعلانات</h2>
   <button onclick="loadAds()" style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">
     عرض الطلبات
@@ -654,6 +654,23 @@ const { error: uploadError } = await supabaseClient
 }
 </script> 
  <script>
+   async function checkAdminAds() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if (!user) return;
+
+  const { data: profile } = await supabaseClient
+    .from('profiles')
+    .select('is_admin')
+    .eq('id', user.id)
+    .single();
+
+  if (profile && profile.is_admin === true) {
+    document.getElementById('adminAds').style.display = 'block';
+  }
+}
+
+checkAdminAds();
 function jobsPage() {
   document.querySelector('.app').style.display = 'none';
   document.querySelector('.bottom').style.display = 'block';
