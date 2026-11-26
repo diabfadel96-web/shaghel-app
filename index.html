@@ -337,10 +337,12 @@ async function shaghelLogin() {
   });
 
   msg.textContent = error ? error.message : 'تم تسجيل الدخول بنجاح';
+  if (!error) await checkAdminAds();
 }
 
 async function shaghelLogout() {
   const { error } = await supabaseClient.auth.signOut();
+  document.getElementById('adminAds').style.display = 'none';
   document.getElementById('authMessage').textContent =
     error ? error.message : 'تم تسجيل الخروج';
 }
