@@ -250,36 +250,13 @@ function renderJobs() {
       ${currentProfile?.is_admin === true ? `
         <button class="secondary" onclick="editJob('${job.id}')">✏️ تعديل</button>
         <button class="danger" onclick="deleteJob('${job.id}')">🗑️ حذف</button>
-      ` : ''}
+      ` : `
+        <button class="primary" onclick="applyForJob('${job.id}')">
+          📩 قدّم على الوظيفة
+        </button>
+      `}
     </div>
   `).join('');
-}
-
-function escapeHTML(value) {
-  return String(value ?? '').replace(/[&<>"']/g, c => ({
-    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
-  })[c]);
-}
-async function deleteJob(id) {
-  if (!currentProfile?.is_admin) {
-    alert('غير مسموح لك بحذف الوظائف.');
-    return;
-  }
-
-  if (!confirm('هل أنت متأكد من حذف هذه الوظيفة؟')) return;
-
-  const { error } = await supabaseClient
-    .from('jobs')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    alert('تعذّر حذف الوظيفة: ' + error.message);
-    return;
-  }
-
-  alert('تم حذف الوظيفة بنجاح.');
-  await loadJobs();
 }
 
 async function editJob(id) {
@@ -312,6 +289,67 @@ async function editJob(id) {
 
   alert('تم تعديل الوظيفة بنجاح.');
   await loadJobs();
+}
+  async function applyForJob(id) {
+  if (!currentUser) {
+    alert('يرجى تسجيل الدخول أولاً حتى تتمكن من التقديم.');
+    showPage('account');
+    return;
+  }
+
+  const job = allJobs.find(item => String(item.id) === String(id));
+  if (!job) {
+    alert('لم يتم العثور على الوظيفة.');
+    return;
+  }
+
+  const name = prompt(
+    'اكتب اسمك الكامل:',
+    currentProfile?.full_name || ''
+  );
+  if (name === null || !name.trim()) return;
+
+  const phone = prompt(
+    'اكتب رقم هاتفك:',
+    currentProfile?.phone || ''
+  );
+  if (phone === null || !phone.trim()) return;
+
+  const message = prompt('اكتب رسالة لصاحب العمل (اختياري):') || '';
+
+  const { data: existing, error: checkError } = await supabaseClient
+    .from('job_applications')
+    .select('id')
+    .eq('job_id', String(id))
+    .eq('applicant_id', currentUser.id)
+    .maybeSingle();
+
+  if (checkError) {
+    alert('تعذّر التحقق من طلبك: ' + checkError.message);
+    return;
+  }
+
+  if (existing) {
+    alert('أنت قدمت مسبقاً على هذه الوظيفة.');
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from('job_applications')
+    .insert({
+      job_id: String(id),
+      applicant_id: currentUser.id,
+      applicant_name: name.trim(),
+      applicant_phone: phone.trim(),
+      message: message.trim()
+    });
+
+  if (error) {
+    alert('تعذّر إرسال طلب التوظيف: ' + error.message);
+    return;
+  }
+
+  alert('تم إرسال طلبك بنجاح! 💚');
 }
 async function signup() {
   const name = document.getElementById('signupName').value.trim();
