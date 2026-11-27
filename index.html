@@ -560,10 +560,18 @@ async function publishJob(event) {
   event.preventDefault();
 
   if (!currentUser) {
-    alert('يرجى تسجيل الدخول أولاً.');
-    showPage('account');
-    return;
-  }
+  alert('يرجى تسجيل الدخول أولاً.');
+  showPage('account');
+  return;
+}
+
+if (
+  currentProfile?.account_type !== 'employer' &&
+  currentProfile?.is_admin !== true
+) {
+  alert('نشر الوظائف متاح للشركات والأدمن فقط.');
+  return;
+}
 
   const job = {
   owner_id: currentUser.id,
