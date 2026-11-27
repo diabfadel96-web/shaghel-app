@@ -537,13 +537,14 @@ async function publishJob(event) {
   }
 
   const job = {
-    title: document.getElementById('jobTitle').value.trim(),
-    company: document.getElementById('jobCompany').value.trim(),
-    description: document.getElementById('jobDescription').value.trim(),
-    category: document.getElementById('jobCategory').value,
-    location: document.getElementById('jobLocation').value.trim(),
-    salary: document.getElementById('jobSalary').value.trim()
-  };
+  owner_id: currentUser.id,
+  title: document.getElementById('jobTitle').value.trim(),
+  company: document.getElementById('jobCompany').value.trim(),
+  description: document.getElementById('jobDescription').value.trim(),
+  category: document.getElementById('jobCategory').value,
+  location: document.getElementById('jobLocation').value.trim(),
+  salary: document.getElementById('jobSalary').value.trim()
+};
 
   const { error } = await supabaseClient.from('jobs').insert(job);
 
