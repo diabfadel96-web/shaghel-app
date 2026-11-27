@@ -337,7 +337,11 @@ async function shaghelLogin() {
   });
 
   msg.textContent = error ? error.message : 'تم تسجيل الدخول بنجاح';
-  if (!error) await checkAdminAds();
+
+  if (!error) {
+    await checkAdminAds();
+    await account();
+  }
 }
 
 async function shaghelLogout() {
