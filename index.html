@@ -388,6 +388,7 @@ async function saveProfile() {
 
   const updates = {
     id: currentUser.id,
+    account_type: currentProfile?.account_type || currentUser.user_metadata?.account_type || 'job_seeker',
     full_name: document.getElementById('editName').value.trim(),
     phone: document.getElementById('editPhone').value.trim(),
     avatar_url: avatarUrl
