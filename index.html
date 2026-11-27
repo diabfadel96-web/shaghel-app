@@ -134,7 +134,12 @@ footer{text-align:center;color:#789080;padding:20px 0}
       <p id="profileMessage" class="muted"></p>
       <button class="danger" onclick="logout()">تسجيل الخروج</button>
     </div>
-
+<div id="employerApplicationsBox" class="panel hidden">
+  <h2>📩 طلبات التوظيف الواردة</h2>
+  <div id="employerApplications">
+    لم يتم تحميل الطلبات بعد.
+  </div>
+</div>
     <div id="adminBox" class="panel hidden">
       <h2>🛠️ لوحة الإدارة</h2>
       <h3>طلبات الإعلان</h3>
@@ -474,7 +479,17 @@ async function ensureProfile(name, phone, accountType) {
   }
 
   currentProfile = profile;
+const employerBox = document.getElementById('employerApplicationsBox');
 
+if (
+  currentProfile?.account_type === 'employer' ||
+  currentProfile?.is_admin === true
+) {
+  employerBox.classList.remove('hidden');
+  loadEmployerApplications();
+} else {
+  employerBox.classList.add('hidden');
+}
   document.getElementById('profileEmail').textContent = currentUser.email || '';
   document.getElementById('editName').value = profile?.full_name || currentUser.user_metadata?.full_name || '';
   document.getElementById('editPhone').value = profile?.phone || currentUser.user_metadata?.phone || '';
@@ -647,7 +662,60 @@ async function loadAdminAds() {
     </div>
   `).join('');
 }
+async function loadEmployerApplications() {
+  const box = document.getElementById('employerApplications');
 
+  if (!currentUser) return;
+
+  box.textContent = 'جاري تحميل طلبات التوظيف...';
+
+  const { data: jobs, error: jobsError } = await supabaseClient
+    .from('jobs')
+    .select('id, title, company')
+    .eq('owner_id', currentUser.id);
+
+  if (jobsError) {
+    box.textContent = 'تعذّر تحميل الوظائف: ' + jobsError.message;
+    return;
+  }
+
+  if (!jobs || jobs.length === 0) {
+    box.textContent = 'لا توجد وظائف منشورة من حسابك حالياً.';
+    return;
+  }
+
+  const jobIds = jobs.map(job => String(job.id));
+
+  const { data: applications, error } = await supabaseClient
+    .from('job_applications')
+    .select('*')
+    .in('job_id', jobIds)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    box.textContent = 'تعذّر تحميل طلبات التوظيف: ' + error.message;
+    return;
+  }
+
+  if (!applications || applications.length === 0) {
+    box.textContent = 'لا توجد طلبات توظيف حتى الآن.';
+    return;
+  }
+
+  box.innerHTML = applications.map(app => {
+    const job = jobs.find(j => String(j.id) === String(app.job_id));
+
+    return `
+      <div class="panel">
+        <h3>${escapeHTML(job?.title || 'وظيفة')}</h3>
+        <p><strong>اسم المتقدم:</strong> ${escapeHTML(app.applicant_name)}</p>
+        <p><strong>رقم الهاتف:</strong> ${escapeHTML(app.applicant_phone)}</p>
+        <p><strong>الرسالة:</strong> ${escapeHTML(app.message || 'لا توجد رسالة')}</p>
+        <p class="muted">${escapeHTML(app.created_at || '')}</p>
+      </div>
+    `;
+  }).join('');
+}
 async function initializeApp() {
   const { data } = await supabaseClient.auth.getSession();
   currentUser = data.session?.user || null;
