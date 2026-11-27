@@ -185,7 +185,15 @@ let currentUser = null;
 let currentProfile = null;
 let allJobs = [];
 let selectedAvatar = null;
-
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[c]);
+}
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
@@ -288,6 +296,27 @@ async function editJob(id) {
   }
 
   alert('تم تعديل الوظيفة بنجاح.');
+  await loadJobs();
+}
+  async function deleteJob(id) {
+  if (!currentProfile?.is_admin) {
+    alert('غير مسموح لك بحذف الوظائف.');
+    return;
+  }
+
+  if (!confirm('هل أنت متأكد من حذف هذه الوظيفة؟')) return;
+
+  const { error } = await supabaseClient
+    .from('jobs')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    alert('تعذّر حذف الوظيفة: ' + error.message);
+    return;
+  }
+
+  alert('تم حذف الوظيفة بنجاح.');
   await loadJobs();
 }
   async function applyForJob(id) {
