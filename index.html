@@ -3,766 +3,524 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101827">
-  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#16a34a">
 <title>SHAGHEL | شغّل</title>
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;background:#0b1120;color:#f5f7fb;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-.app{max-width:480px;margin:auto;min-height:100vh;padding:20px 16px 90px}
-header{display:flex;align-items:center;justify-content:space-between;padding:10px 0 25px}
-.logo{font-size:27px;font-weight:900;letter-spacing:1px}
-.logo span{color:#36d399}
-.avatar{width:42px;height:42px;border-radius:50%;background:#1e293b;display:grid;place-items:center}
-.welcome{font-size:14px;color:#aab5c7}
-h1{font-size:26px;margin:8px 0 20px;line-height:1.5}
-.hero{
-  padding:22px;border-radius:22px;
-  background:linear-gradient(135deg,#087f5b,#123c54);
-  margin-bottom:25px;
-}
-.hero h2{font-size:21px;margin:0 0 10px}
-.hero p{color:#e0f2ec;font-size:14px;line-height:1.8}
-button{
-  border:0;border-radius:12px;padding:13px 18px;
-  font-size:15px;font-weight:bold;cursor:pointer;
-}
-.primary{background:#36d399;color:#071c16}
-.search{
-  display:flex;background:#172235;border:1px solid #263449;
-  border-radius:14px;padding:4px;margin:18px 0;
-}
-.search input{
-  background:transparent;border:0;outline:0;color:white;
-  padding:12px;width:100%;font-size:15px;
-}
-.search button{background:#36d399}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 0 14px}
-.section-title h2{font-size:18px}
-.section-title span{color:#36d399;font-size:13px}
-.categories{display:flex;gap:10px;overflow:auto;padding-bottom:8px}
-.category{
-  flex:0 0 auto;background:#172235;border:1px solid #263449;
-  border-radius:14px;padding:13px 17px;color:#fff;font-size:14px;
-}
-.job{
-  background:#121d30;border:1px solid #233149;
-  border-radius:18px;padding:17px;margin-bottom:13px;
-}
-.job-top{display:flex;align-items:center;gap:12px}
-.job-icon{
-  width:48px;height:48px;border-radius:14px;background:#1e3045;
-  display:grid;place-items:center;font-size:22px;
-}
-.job h3{margin:0 0 5px;font-size:16px}
-.muted{color:#9eabc0;font-size:13px}
-.job-info{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
-.job-info span{font-size:12px;color:#c2ccda;background:#1b2940;padding:7px 10px;border-radius:9px}
-.money{color:#36d399;font-weight:bold}
-.job button{width:100%;background:#1d3045;color:#36d399;margin-top:5px}
-.bottom{
- position:fixed;bottom:0;left:0;right:0;
- background:#101827;border-top:1px solid #263449;
- display:flex;justify-content:center;
-}
-.nav{max-width:480px;width:100%;display:flex;justify-content:space-around;padding:12px 4px}
-.nav button{background:none;color:#aab5c7;padding:10px;font-size:12px}
-.nav button.active{color:#36d399}
-.hidden{display:none}
-#message{color:#36d399;text-align:center;margin-top:15px;font-size:14px}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f8f4;color:#173b29}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+header{background:#fff;padding:22px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #dcebe0}
+.logo{font-size:30px;font-weight:900;color:#14532d}
+.logo span{color:#16a34a}
+header button{background:#e8f5ec;color:#14532d;padding:10px 14px;border-radius:12px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #d7e7dc;display:flex;justify-content:space-around;padding:12px 4px;z-index:10}
+nav button{background:transparent;color:#718579;font-weight:bold;font-size:14px;padding:8px 5px}
+nav button.active{color:#16a34a}
+main{max-width:850px;margin:auto;padding:20px 16px 100px}
+.page{display:none}
+.page.active{display:block}
+h2{color:#14532d}
+.panel,.job,.profile-box{background:#fff;border:1px solid #dcebe0;border-radius:22px;padding:20px;margin:16px 0;box-shadow:0 4px 16px #173b2908}
+input,select,textarea{width:100%;padding:15px;margin:8px 0;border:1px solid #cfe1d4;border-radius:13px;background:#fff;color:#173b29}
+textarea{min-height:110px;resize:vertical}
+.primary{background:#16a34a;color:white;padding:15px 18px;border-radius:14px;font-weight:bold;width:100%;margin-top:8px}
+.secondary{background:#e8f5ec;color:#14532d;padding:12px 16px;border-radius:12px;font-weight:bold}
+.danger{background:#fee2e2;color:#991b1b;padding:12px;border-radius:12px}
+.job h3{margin:0 0 8px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tag{background:#edf6ef;color:#456b51;border-radius:20px;padding:8px 12px;font-size:14px}
+.muted{color:#718579}
+.hidden{display:none!important}
+.avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;background:#e8f5ec}
+footer{text-align:center;color:#789080;padding:20px 0}
 </style>
 </head>
 <body>
-<div class="app">
 
 <header>
   <div class="logo">SHAG<span>G</span>EL</div>
-  <div class="avatar">👤</div>
+  <button onclick="showPage('account')">👤 حسابي</button>
 </header>
 
-<div class="welcome">أهلاً فيك بمنصة شغّل 🇱🇧</div>
-<h1>خلّينا نلاقي<br>شغل إلك.</h1>
+<main>
+  <section id="homePage" class="page active">
+    <h2>أهلاً بك في شغّل 👋</h2>
+    <div class="panel">
+      <h2>ابحث عن فرصتك القادمة 💼</h2>
+      <input id="homeSearch" placeholder="ابحث عن وظيفة..." oninput="searchFromHome()">
+      <button class="primary" onclick="showPage('jobs')">عرض الوظائف</button>
+    </div>
+    <div class="panel">
+      <h2>هل تبحث عن موظفين؟</h2>
+      <p class="muted">انشر وظيفة مجاناً وابدأ باستقبال المهتمين.</p>
+      <button class="primary" onclick="showPage('jobs')">＋ انشر وظيفة (مجاني)</button>
+    </div>
+    <div class="panel">
+      <h2>منصة شغّل</h2>
+      <p>منصة تساعد الباحثين عن عمل والشركات على الوصول إلى الفرص المناسبة.</p>
+    </div>
+  </section>
 
-<section class="hero">
-  <h2>فرصتك ممكن تبدأ اليوم.</h2>
-  <p>اكتشف فرص عمل ومهام حقيقية، وابني خبرتك خطوة بخطوة.</p>
-  <button class="primary" onclick="showJobs()">اكتشف فرص الشغل</button>
-</section>
+  <section id="jobsPage" class="page">
+    <h2>💼 الوظائف المتاحة</h2>
+    <input id="jobSearch" placeholder="ابحث عن وظيفة أو شركة..." oninput="renderJobs()">
+    <select id="categoryFilter" onchange="renderJobs()">
+      <option value="">كل المجالات</option>
+      <option>تصميم</option>
+      <option>مبيعات</option>
+      <option>مطاعم</option>
+      <option>إدارة</option>
+      <option>تكنولوجيا</option>
+      <option>تعليم</option>
+      <option>أخرى</option>
+    </select>
+    <div id="jobsList"><p class="muted">جاري تحميل الوظائف...</p></div>
 
-<div class="search">
-  <input id="searchInput" placeholder="شو نوع الشغل اللي عم تدور عليه؟">
-  <button onclick="searchJobs()">بحث</button>
-</div>
-
-<div class="section-title">
-  <h2>مجالات الشغل</h2>
-</div>
-
-<div class="categories">
-  <button class="category" onclick="filterJobs('الكل')">الكل</button>
-  <button class="category" onclick="filterJobs('تصميم')">🎨 تصميم</button>
-  <button class="category" onclick="filterJobs('تسويق')">📱 تسويق</button>
-  <button class="category" onclick="filterJobs('تصوير')">📸 تصوير</button>
-  <button class="category" onclick="filterJobs('إدخال')">💻 إدخال بيانات</button>
-</div>
-
-<div class="section-title" id="jobsSection">
-  <h2>فرص متاحة</h2>
-  <span>فرص تجريبية</span>
-</div>
-
-<div id="jobs">
-  <article class="job" data-category="تصميم">
-    <div class="job-top">
-      <div class="job-icon">🎨</div>
-      <div>
-        <h3>تصميم منشورات سوشيال ميديا</h3>
-        <div class="muted">عمل عن بُعد</div>
+    <div class="panel">
+      <h2>＋ انشر وظيفة مجاناً</h2>
+      <div id="jobLoginMessage" class="muted">يجب تسجيل الدخول لنشر وظيفة.</div>
+      <form id="jobForm" onsubmit="publishJob(event)">
+        <input id="jobTitle" placeholder="المسمى الوظيفي" required>
+        <input id="jobCompany" placeholder="اسم الشركة" required>
+        <textarea id="jobDescription" placeholder="وصف الوظيفة والمتطلبات" required></textarea>
+        <select id="jobCategory" required>
+          <option value="">اختر المجال</option>
+          <option>تصميم</option><option>مبيعات</option><option>مطاعم</option>
+          <option>إدارة</option><option>تكنولوجيا</option><option>تعليم</option><option>أخرى</option>
+        </select>
+        <input id="jobLocation" placeholder="مكان العمل">
+        <input id="jobSalary" placeholder="الراتب (اختياري)">
+        <button class="primary" type="submit">نشر الوظيفة مجاناً</button>
+      </form>
+    </div>
+  </section>
+    <section id="accountPage" class="page">
+    <h2>👤 حسابي</h2>
+    <div id="authBox" class="panel">
+      <div id="signupBox">
+        <h2>إنشاء حساب جديد</h2>
+        <input id="signupName" placeholder="الاسم الكامل">
+        <input id="signupPhone" placeholder="رقم الهاتف">
+        <input id="signupEmail" type="email" placeholder="البريد الإلكتروني">
+        <input id="signupPassword" type="password" placeholder="كلمة المرور">
+        <select id="signupType">
+          <option value="job_seeker">باحث عن عمل</option>
+          <option value="employer">صاحب شركة</option>
+        </select>
+        <button class="primary" onclick="signup()">إنشاء حساب</button>
       </div>
-    </div>
-    <div class="job-info">
-      <span>📍 لبنان</span>
-      <span>⏱ مشروع</span>
-      <span class="money">$20</span>
-    </div>
-    <button onclick="apply(this)">قدّم على المهمة</button>
-  </article>
-
-  <article class="job" data-category="تصوير">
-    <div class="job-top">
-      <div class="job-icon">📸</div>
+      <hr style="border:0;border-top:1px solid #e1eee4;margin:22px 0">
       <div>
-        <h3>تصوير منتجات لمحل</h3>
-        <div class="muted">عمل ميداني</div>
+        <h2>تسجيل الدخول</h2>
+        <input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
+        <input id="loginPassword" type="password" placeholder="كلمة المرور">
+        <button class="primary" onclick="login()">دخول</button>
       </div>
+      <p id="authMessage" class="muted"></p>
     </div>
-    <div class="job-info">
-      <span>📍 بيروت</span>
-      <span>⏱ مهمة</span>
-      <span class="money">$15</span>
-    </div>
-    <button onclick="apply(this)">قدّم على المهمة</button>
-  </article>
 
-  <article class="job" data-category="تسويق">
-    <div class="job-top">
-      <div class="job-icon">📱</div>
-      <div>
-        <h3>إدارة صفحة متجر</h3>
-        <div class="muted">عمل عن بُعد</div>
-      </div>
+    <div id="profileBox" class="profile-box hidden">
+      <img id="avatarPreview" class="avatar" alt="الصورة الشخصية">
+      <h2>معلومات الحساب</h2>
+      <p id="profileEmail" class="muted"></p>
+      <label>الاسم الكامل</label>
+      <input id="editName" placeholder="الاسم الكامل">
+      <label>رقم الهاتف</label>
+      <input id="editPhone" placeholder="رقم الهاتف">
+      <label>الصورة الشخصية</label>
+      <input id="avatarFile" type="file" accept="image/*" onchange="previewAvatar(event)">
+      <button class="primary" onclick="saveProfile()">حفظ التعديلات</button>
+      <p id="profileMessage" class="muted"></p>
+      <button class="danger" onclick="logout()">تسجيل الخروج</button>
     </div>
-    <div class="job-info">
-      <span>📍 لبنان</span>
-      <span>⏱ شهري</span>
-      <span class="money">$150</span>
+
+    <div id="adminBox" class="panel hidden">
+      <h2>🛠️ لوحة الإدارة</h2>
+      <h3>طلبات الإعلان</h3>
+      <div id="adminAds">جاري تحميل الطلبات...</div>
     </div>
-    <button onclick="apply(this)">قدّم على المهمة</button>
-  </article>
+  </section>
 
-  <article class="job" data-category="إدخال">
-    <div class="job-top">
-      <div class="job-icon">💻</div>
-      <div>
-        <h3>إدخال بيانات وتنظيم ملفات</h3>
-        <div class="muted">عمل عن بُعد</div>
-      </div>
+  <section id="advertisePage" class="page">
+    <h2>📢 أعلن معنا</h2>
+    <div class="panel">
+      <p>أرسل طلبك للإعلان على منصة شغّل، وسنتواصل معك.</p>
+      <form id="adForm" onsubmit="sendAdRequest(event)">
+        <input id="adCompany" placeholder="اسم الشركة أو المؤسسة" required>
+        <select id="adType" required>
+          <option value="">نوع الإعلان</option>
+          <option>إعلان مميز</option>
+          <option>إعلان عادي</option>
+          <option>إعلان توظيف</option>
+        </select>
+        <select id="adDuration" required>
+          <option value="">مدة الإعلان</option>
+          <option>أسبوع</option>
+          <option>أسبوعان</option>
+          <option>شهر</option>
+        </select>
+        <input id="adContact" placeholder="رقم الهاتف أو البريد للتواصل" required>
+        <button class="primary" type="submit">إرسال طلب الإعلان</button>
+      </form>
+      <p id="adMessage" class="muted"></p>
     </div>
-    <div class="job-info">
-      <span>📍 لبنان</span>
-      <span>⏱ مشروع</span>
-      <span class="money">$25</span>
-    </div>
-    <button onclick="apply(this)">قدّم على المهمة</button>
-  </article>
-</div>
+  </section>
+</main>
 
-<div id="message"></div>
+<nav>
+  <button id="navHome" class="active" onclick="showPage('home')">🏠 الرئيسية</button>
+  <button id="navJobs" onclick="showPage('jobs')">💼 شغل</button>
+  <button id="navAccount" onclick="showPage('account')">👤 حسابي</button>
+  <button id="navAdvertise" onclick="showPage('advertise')">📢 إعلان</button>
+</nav>
 
-</div>
-
-<div class="bottom">
-  <nav class="nav">
-    <button class="active" onclick="home()">🏠 الرئيسية</button>
-<button onclick="jobsPage()">💼 شغل</button>
-<button onclick="account()">👤 حسابي</button>
-  </nav>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://bysbccjrewqfsqwopogv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_hcJpY9eW6AwXmfvfF6mKwg_dud6qlRR';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-</script>
-<script>
-function apply(btn){
-  document.getElementById('message').textContent=
-  'التقديم الحقيقي رح يتفعّل عند بناء نظام الحسابات.';
-}
-function showJobs(){
-  document.getElementById('jobsSection').scrollIntoView({behavior:'smooth'});
-}
-function searchJobs(){
-  const q=document.getElementById('searchInput').value.trim().toLowerCase();
-  document.querySelectorAll('.job').forEach(j=>{
-    j.style.display=j.innerText.toLowerCase().includes(q)?'':'none';
-  });
-}
-function filterJobs(cat){
-  document.querySelectorAll('.job').forEach(j=>{
-    j.style.display=(cat==='الكل'||j.dataset.category===cat)?'':'none';
-  });
-}
-function home(){
- document.querySelector('.app').style.display = 'block';
 
-  document.querySelector('.bottom').style.display = 'block';
-  document.getElementById('accountPage').style.display = 'none';
-document.getElementById('jobsPage').style.display = 'none';
-  document.getElementById('searchInput').value='';
-  filterJobs('الكل');
-  document.getElementById('message').textContent='';
-  window.scrollTo({top:0,behavior:'smooth'});
+let currentUser = null;
+let currentProfile = null;
+let allJobs = [];
+let selectedAvatar = null;
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(name + 'Page').classList.add('active');
+  const nav = document.getElementById('nav' + name.charAt(0).toUpperCase() + name.slice(1));
+  if (nav) nav.classList.add('active');
+  if (name === 'jobs') loadJobs();
+  if (name === 'account') refreshAccount();
 }
-</script>
-  <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js');
-  });
+
+function searchFromHome() {
+  document.getElementById('jobSearch').value = document.getElementById('homeSearch').value;
+  showPage('jobs');
+  renderJobs();
 }
-    async function loadJobs() {
+
+async function loadJobs() {
+  const list = document.getElementById('jobsList');
+  list.innerHTML = '<p class="muted">جاري تحميل الوظائف...</p>';
   const { data, error } = await supabaseClient
-    .from('jobs')
-    .select('*')
-    .order('created_at', { ascending: false });
+    .from('jobs').select('*').order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Jobs error:', error);
+    list.innerHTML = '<p>تعذّر تحميل الوظائف: ' + escapeHTML(error.message) + '</p>';
+    return;
+  }
+  allJobs = data || [];
+  renderJobs();
+}
+
+function renderJobs() {
+  const list = document.getElementById('jobsList');
+  const search = (document.getElementById('jobSearch').value || '').trim().toLowerCase();
+  const category = document.getElementById('categoryFilter').value;
+  const filtered = allJobs.filter(job => {
+    const text = [job.title, job.company, job.description, job.location].join(' ').toLowerCase();
+    return (!search || text.includes(search)) && (!category || job.category === category);
+  });
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="panel">لا توجد وظائف مطابقة حالياً.</div>';
     return;
   }
 
-  const firstJob = document.querySelector('.job');
-  if (!firstJob) return;
-
-  const container = firstJob.parentElement;
-  container.querySelectorAll('.job').forEach(job => job.remove());
-
-  data.forEach(job => {
-    const card = document.createElement('article');
-    card.className = 'job';
-    card.dataset.category = job.category || '';
-
-    const info = document.createElement('div');
-    info.innerHTML = `
-      <div class="job-top">
-        <div class="job-icon">💼</div>
-        <div>
-          <h3></h3>
-          <div class="muted"></div>
-        </div>
+  list.innerHTML = filtered.map(job => `
+    <div class="job">
+      <h3>${escapeHTML(job.title || 'وظيفة')}</h3>
+      <p>${escapeHTML(job.company || '')}</p>
+      <div class="meta">
+        <span class="tag">📍 ${escapeHTML(job.location || 'غير محدد')}</span>
+        <span class="tag">${escapeHTML(job.category || 'أخرى')}</span>
+        <span class="tag">${escapeHTML(job.salary || 'غير محدد')}</span>
       </div>
-      <p class="muted"></p>
-      <div class="job-info">
-        <span>📍 ${job.location || 'لبنان'}</span>
-        <span class="money">${job.salary || ''}</span>
-      </div>
-    `;
-
-    info.querySelector('h3').textContent = job.title || '';
-    info.querySelector('.job-top .muted').textContent = job.company || '';
-    info.querySelector('p').textContent = job.description || '';
-
-    card.appendChild(info);
-    container.appendChild(card);
-  });
+      <p>${escapeHTML(job.description || '')}</p>
+    </div>
+  `).join('');
 }
 
-loadJobs();
-</script>
-  <div id="authBox" style="max-width:400px;margin:20px auto;padding:20px;background:#172033;border-radius:16px;color:white;text-align:center;border:1px solid #263247;direction:rtl">
-  <h2>حساب شغّل</h2>
-  <input id="authName" placeholder="الاسم الكامل" style="width:100%;padding:12px;margin:8px 0;border-radius:8px">
-  <input id="authEmail" type="email" placeholder="البريد الإلكتروني" style="width:100%;padding:12px;margin:8px 0;border-radius:8px">
-  <input id="authPassword" type="password" placeholder="كلمة المرور" style="width:100%;padding:12px;margin:8px 0;border-radius:8px">
-  <select id="authType" style="width:100%;padding:12px;margin:8px 0;border-radius:8px">
-    <option value="job_seeker">باحث عن عمل</option>
-    <option value="employer">صاحب عمل</option>
-  </select>
-  <button onclick="shaghelSignup()" style="width:100%;padding:12px;margin:8px 0">إنشاء حساب</button>
-  <button onclick="shaghelLogin()" style="width:100%;padding:12px;margin:8px 0">تسجيل الدخول</button>
-  <button onclick="shaghelLogout()" style="width:100%;padding:12px;margin:8px 0">تسجيل الخروج</button>
-  <p id="authMessage"></p>
-</div>
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[c]);
+}
 
-<script>
-async function shaghelSignup() {
-  const name = document.getElementById('authName').value.trim();
-  const email = document.getElementById('authEmail').value.trim();
-  const password = document.getElementById('authPassword').value;
-  const type = document.getElementById('authType').value;
+async function signup() {
+  const name = document.getElementById('signupName').value.trim();
+  const phone = document.getElementById('signupPhone').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const accountType = document.getElementById('signupType').value;
   const msg = document.getElementById('authMessage');
 
   if (!name || !email || !password) {
-    msg.textContent = 'يرجى تعبئة جميع الحقول';
+    msg.textContent = 'يرجى تعبئة الاسم والبريد وكلمة المرور.';
     return;
   }
 
+  msg.textContent = 'جاري إنشاء الحساب...';
   const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: 'https://diabfadel96-web.github.io/shaghel-app/',
-      data: {
-        full_name: name,
-        account_type: type
-      }
-    }
+    email, password,
+    options: { data: { full_name: name, phone, account_type: accountType } }
   });
-
-  msg.textContent = error ? error.message : 'تم التسجيل، تحقق من بريدك الإلكتروني';
-}
-
-async function shaghelLogin() {
-  const email = document.getElementById('authEmail').value.trim();
-  const password = document.getElementById('authPassword').value;
-  const msg = document.getElementById('authMessage');
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  msg.textContent = error ? error.message : 'تم تسجيل الدخول بنجاح';
-
-  if (!error) {
-    await checkAdminAds();
-    await account();
-  }
-}
-
-async function shaghelLogout() {
-  const { error } = await supabaseClient.auth.signOut();
-  document.getElementById('adminAds').style.display = 'none';
-  document.getElementById('authMessage').textContent =
-    error ? error.message : 'تم تسجيل الخروج';
-}
-</script>
-  <style>
-#authBox input,
-#authBox select {
-  background:#0b1120 !important;
-  color:#f5f7fb !important;
-  border:1px solid #263247 !important;
-  box-sizing:border-box;
-}
-
-#authBox input::placeholder {
-  color:#9aa4b2 !important;
-}
-
-#authBox button {
-  background:#1f6b50 !important;
-  color:white !important;
-  border:1px solid #263247 !important;
-  border-radius:12px !important;
-  font-weight:bold;
-  cursor:pointer;
-}
-</style>
-  <script>
-const hash = window.location.hash;
-
-if (hash && hash.includes('access_token')) {
-  window.location.href = 'https://diabfadel96-web.github.io/shaghel-app/';
-}
-</script>
-  <!-- أعلن معنا -->
-<section id="advertise" style="margin:25px auto;padding:22px;max-width:600px;background:#172033;color:#fff;border-radius:16px;text-align:center;direction:rtl">
-  <h2>📢 أعلن معنا</h2>
-  <p>خلّي إعلانك يوصل لجمهور أكبر عبر SHAGHEL.</p>
-
-  <form id="advertiseForm">
-    <input id="adCompany" placeholder="اسم الشركة أو التطبيق" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
-    <input id="adType" placeholder="شو بدك تعلن؟" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
-    <input id="adDuration" placeholder="مدة الإعلان (أسبوع أو شهر)" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
-    <input id="adContact" placeholder="إيميل أو رقم الهاتف" required style="width:100%;padding:12px;margin:8px 0;border-radius:10px">
-
-    <button type="submit" style="background:#22c55e;color:white;padding:12px 22px;border:0;border-radius:10px;font-weight:bold">
-      إرسال طلب الإعلان
-    </button>
-  </form>
-
-  <p id="adMessage"></p>
-</section>
-  <script>
-document.getElementById('advertiseForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-
-  const btn = this.querySelector('button');
-  btn.disabled = true;
-  btn.textContent = 'جارٍ الإرسال...';
-
-  const { error } = await supabaseClient
-    .from('advertising_requests')
-    .insert([{
-      company_name: document.getElementById('adCompany').value,
-      ad_type: document.getElementById('adType').value,
-      duration: document.getElementById('adDuration').value,
-      contact: document.getElementById('adContact').value
-    }]);
-
-  const msg = document.getElementById('adMessage');
 
   if (error) {
-   msg.textContent = 'حدث خطأ: ' + error.message; 
-    console.error(error);
+    msg.textContent = 'تعذّر إنشاء الحساب: ' + error.message;
+    return;
+  }
+  if (data.user && data.session) {
+    currentUser = data.user;
+    await ensureProfile(name, phone, accountType);
+    msg.textContent = 'تم إنشاء الحساب بنجاح.';
+    await refreshAccount();
   } else {
-    msg.textContent = '✅ تم إرسال طلب الإعلان بنجاح!';
-    this.reset();
+    msg.textContent = 'تم إرسال طلب إنشاء الحساب. إذا طُلب منك تأكيد البريد، راجع بريدك الإلكتروني.';
   }
-
-  btn.disabled = false;
-  btn.textContent = 'إرسال طلب الإعلان';
-});
-</script>
-  <section id="adminAds" style="display:none;margin:25px auto;padding:22px;max-width:600px;background:#111827;color:white;border-radius:16px;text-align:center;direction:rtl">
-  <h2>🔐 طلبات الإعلانات</h2>
-  <button onclick="loadAds()" style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">
-    عرض الطلبات
-  </button>
-  <div id="adsList" style="margin-top:15px"></div>
-</section>
-
-<script>
-async function loadAds() {
-  const box = document.getElementById('adsList');
-  box.innerHTML = 'جارٍ تحميل الطلبات...';
-
-  const { data, error } = await supabaseClient
-    .from('advertising_requests')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    box.textContent = 'تعذّر تحميل الطلبات.';
-    return;
-  }
-
-  box.innerHTML = '';
-
-  data.forEach(ad => {
-    const card = document.createElement('div');
-    card.style.cssText = 'background:#172033;padding:15px;margin:10px 0;border-radius:12px;text-align:right';
-
-    card.innerHTML = `
-      <strong>🏢 ${ad.company_name || ''}</strong><br>
-      📢 ${ad.ad_type || ''}<br>
-      ⏳ ${ad.duration || ''}<br>
-      📞 ${ad.contact || ''}
-    `;
-
-    box.appendChild(card);
-  });
 }
-</script>
-<section id="jobsPage" style="display:none;max-width:600px;margin:25px auto;padding:22px;background:#172033;color:white;border-radius:16px;text-align:center;direction:rtl">
 
-  <h2>💼 الوظائف المتاحة</h2>
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const msg = document.getElementById('authMessage');
+  msg.textContent = 'جاري تسجيل الدخول...';
 
-  <button onclick="showJobForm()" style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">
-    ➕ نشر وظيفة
-  </button>
-
-  <div id="jobForm" style="display:none;margin-top:20px">
-  </div>
-
-  <div id="jobsList" style="margin-top:20px">
-    جارٍ تحميل الوظائف...
-  </div>
-
-</section>  
-<section id="accountPage" style="display:none;max-width:600px;margin:25px auto;padding:22px;background:#172033;color:white;border-radius:16px;text-align:center;direction:rtl">
-
-  <h2>👤 حسابي</h2>
-<button onclick="home()" style="display:block;margin:15px auto;padding:12px 20px;background:#22c55e;color:white;border:0;border-radius:10px">
-🏠 العودة للرئيسية
-</button>
-  <img id="accountAvatar"
-       src=""
-       style="width:120px;height:120px;border-radius:50%;object-fit:cover;background:#334155;border:3px solid #22c55e">
-
-  <br><br>
-
-  <input type="file" id="avatarInput" accept="image/jpeg,image/png,image/webp" hidden onchange="uploadAvatar(event)">
-
-  <button onclick="document.getElementById('avatarInput').click()"
-    style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">
-    📷 تغيير الصورة
-  </button>
-
-  <div style="margin-top:20px">
-    <input id="editFullName" placeholder="الاسم الكامل"
-      style="width:90%;padding:12px;margin:8px;border-radius:8px">
-
-    <input id="editPhone" placeholder="رقم الهاتف (اختياري)"
-      style="width:90%;padding:12px;margin:8px;border-radius:8px">
-
-    <button onclick="saveProfile()"
-      style="padding:12px;background:#2563eb;color:white;border:0;border-radius:10px">
-      💾 حفظ التعديلات
-    </button>
-  </div>
-
-  <p id="accountInfo">جارٍ تحميل معلومات الحساب...</p>
-
-  <button onclick="home()" style="padding:12px;background:#22c55e;color:white;border:0;border-radius:10px">
-    الرئيسية
-  </button>
-
-  <button onclick="shaghelLogout()" style="padding:12px;background:#ef4444;color:white;border:0;border-radius:10px">
-    تسجيل الخروج
-  </button>
-
-</section>
-<script>
-async function account() {
-  document.querySelector('.app').style.display = 'none'; 
-document.querySelector('.bottom').style.display = 'none';
-  document.getElementById('accountPage').style.display = 'block';
-document.getElementById('jobsPage').style.display = 'none';
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if (!user) {
-    document.getElementById('accountInfo').textContent =
-      'يرجى تسجيل الدخول أولاً';
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error) {
+    msg.textContent = 'تعذّر تسجيل الدخول: ' + error.message;
     return;
   }
+  currentUser = data.user;
+  msg.textContent = 'تم تسجيل الدخول.';
+  await refreshAccount();
+}
+
+async function ensureProfile(name, phone, accountType) {
+  if (!currentUser) return;
+  const { data } = await supabaseClient.from('profiles')
+    .select('id').eq('id', currentUser.id).maybeSingle();
+
+  if (!data) {
+    await supabaseClient.from('profiles').insert({
+      id: currentUser.id,
+      full_name: name,
+      phone: phone,
+      account_type: accountType
+    });
+  }
+}
+  async function refreshAccount() {
+  const { data: authData } = await supabaseClient.auth.getUser();
+  currentUser = authData.user;
+
+  const authBox = document.getElementById('authBox');
+  const profileBox = document.getElementById('profileBox');
+  const adminBox = document.getElementById('adminBox');
+
+  if (!currentUser) {
+    authBox.classList.remove('hidden');
+    profileBox.classList.add('hidden');
+    adminBox.classList.add('hidden');
+    return;
+  }
+
+  authBox.classList.add('hidden');
+  profileBox.classList.remove('hidden');
 
   const { data: profile, error } = await supabaseClient
     .from('profiles')
     .select('*')
-    .eq('id', user.id)
-    .single();
-if (error) {
-  document.getElementById('accountInfo').textContent =
-    'تعذّر تحميل معلومات الحساب: ' + error.message;
-  return;
-}
- 
-  document.getElementById('editFullName').value =
-    profile.full_name || '';
-
-  document.getElementById('editPhone').value =
-    profile.phone || '';
-
-  if (profile.avatar_url) {
-    document.getElementById('accountAvatar').src =
-      profile.avatar_url;
-  }
-
-  const type =
-    profile.account_type === 'employer'
-      ? 'صاحب عمل'
-      : profile.account_type === 'job_seeker'
-        ? 'باحث عن عمل'
-        : 'غير محدد';
-
-  document.getElementById('accountInfo').innerHTML =
-    'الإيميل: ' + user.email + '<br>' +
-    'نوع الحساب: ' + type;
-}
-  async function saveProfile() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if (!user) {
-    alert('يرجى تسجيل الدخول أولاً');
-    return;
-  }
-
-  const full_name = document.getElementById('editFullName').value.trim();
-  const phone = document.getElementById('editPhone').value.trim();
-
-  const { error } = await supabaseClient
-    .from('profiles')
-    .update({ full_name, phone })
-    .eq('id', user.id);
+    .eq('id', currentUser.id)
+    .maybeSingle();
 
   if (error) {
-    alert('حدث خطأ أثناء الحفظ: ' + error.message);
+    document.getElementById('profileMessage').textContent =
+      'تعذّر تحميل معلومات الحساب: ' + error.message;
     return;
   }
 
-  alert('تم حفظ معلومات الحساب بنجاح ✅');
-  await account();
+  currentProfile = profile;
+
+  document.getElementById('profileEmail').textContent = currentUser.email || '';
+  document.getElementById('editName').value = profile?.full_name || currentUser.user_metadata?.full_name || '';
+  document.getElementById('editPhone').value = profile?.phone || currentUser.user_metadata?.phone || '';
+  document.getElementById('avatarPreview').src =
+    profile?.avatar_url || 'https://placehold.co/100x100/e8f5ec/14532d?text=User';
+
+  if (profile?.is_admin === true) {
+    adminBox.classList.remove('hidden');
+    loadAdminAds();
+  } else {
+    adminBox.classList.add('hidden');
+  }
+
+  document.getElementById('jobLoginMessage').textContent = 'أنت مسجل الدخول ويمكنك نشر وظيفة مجاناً.';
 }
-// هون الصق كود uploadAvatar كامل
-async function uploadAvatar(event) {
+
+async function saveProfile() {
+  if (!currentUser) return;
+  const msg = document.getElementById('profileMessage');
+  msg.textContent = 'جاري حفظ التعديلات...';
+
+  let avatarUrl = currentProfile?.avatar_url || null;
+
+  if (selectedAvatar) {
+    const fileExt = selectedAvatar.name.split('.').pop();
+    const filePath = currentUser.id + '/' + Date.now() + '.' + fileExt;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from('avatars')
+      .upload(filePath, selectedAvatar, { upsert: true });
+
+    if (uploadError) {
+      msg.textContent = 'تعذّر رفع الصورة: ' + uploadError.message;
+      return;
+    }
+
+    const { data: publicData } = supabaseClient.storage
+      .from('avatars').getPublicUrl(filePath);
+    avatarUrl = publicData.publicUrl;
+  }
+
+  const updates = {
+    id: currentUser.id,
+    full_name: document.getElementById('editName').value.trim(),
+    phone: document.getElementById('editPhone').value.trim(),
+    avatar_url: avatarUrl
+  };
+
+  const { error } = await supabaseClient.from('profiles')
+    .upsert(updates, { onConflict: 'id' });
+
+  if (error) {
+    msg.textContent = 'تعذّر حفظ البيانات: ' + error.message;
+    return;
+  }
+
+  selectedAvatar = null;
+  msg.textContent = 'تم حفظ التعديلات بنجاح.';
+  await refreshAccount();
+}
+
+function previewAvatar(event) {
   const file = event.target.files[0];
   if (!file) return;
-alert(
-  'حجم الصورة: ' + file.size +
-  ' بايت\nنوع الصورة: ' + file.type
-);
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if (!user) {
-    alert('يرجى تسجيل الدخول أولاً');
-    return;
-  }
-
-  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-    alert('اختار صورة JPG أو PNG أو WEBP');
-    return;
-  }
-
-  if (file.size > 2 * 1024 * 1024) {
-    alert('حجم الصورة يجب ألا يتجاوز 2 MB');
-    return;
-  }
-
-  const ext = file.type === 'image/png' ? 'png'
-    : file.type === 'image/webp' ? 'webp' : 'jpg';
-const path = `${user.id}/avatar-${Date.now()}.${ext}`;
-const { error: uploadError } = await supabaseClient
-  .storage
-  .from('avatars')
-  .upload(path, await file.arrayBuffer(), {
-    cacheControl: '3600',
-    upsert: false,
-    contentType: file.type
-  });
-    if (uploadError) {
-    alert('تعذّر رفع الصورة: ' + uploadError.message);
-    return;
-  }
-
-  const { data: { publicUrl } } = supabaseClient
-    .storage.from('avatars')
-    .getPublicUrl(path);
-
-  const { error: updateError } = await supabaseClient
-    .from('profiles')
-    .update({ avatar_url: publicUrl })
-    .eq('id', user.id);
-
-  if (updateError) {
-    alert('تعذّر حفظ رابط الصورة: ' + updateError.message);
-    return;
-  }
-
-  document.getElementById('accountAvatar').src = publicUrl;
-  alert('تم تحديث صورة الحساب بنجاح ✅');
-  event.target.value = '';
-}
-</script> 
- <script>
-   async function checkAdminAds() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if (!user) return;
-
-  const { data: profile } = await supabaseClient
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single();
-
-  if (profile && profile.is_admin === true) {
-    document.getElementById('adminAds').style.display = 'block';
-  }
+  selectedAvatar = file;
+  document.getElementById('avatarPreview').src = URL.createObjectURL(file);
 }
 
-checkAdminAds();
-function jobsPage() {
-  document.querySelector('.app').style.display = 'none';
-  document.querySelector('.bottom').style.display = 'block';
-  document.getElementById('accountPage').style.display = 'none';
-  document.getElementById('jobsPage').style.display = 'block';
-  loadJobs();
-}
-
-function showJobForm() {
-  document.getElementById('jobForm').style.display = 'block';
-  document.getElementById('jobForm').innerHTML = `
-    <input id="jobTitle" placeholder="عنوان الوظيفة">
-    <input id="jobCompany" placeholder="اسم الشركة">
-    <input id="jobLocation" placeholder="مكان العمل">
-    <input id="jobSalary" placeholder="الراتب">
-    <textarea id="jobDescription" placeholder="تفاصيل الوظيفة"></textarea>
-    <button onclick="publishJob()">نشر الوظيفة</button>
-  `;
-}
-   async function loadJobs() {
-  const box = document.getElementById('jobsList');
-  box.textContent = 'جارٍ تحميل الوظائف...';
-
-  const { data, error } = await supabaseClient
-    .from('jobs')
-    .select('*')
-    .order('created_at', { ascending: false });
-
+async function logout() {
+  const { error } = await supabaseClient.auth.signOut();
   if (error) {
-    box.textContent = 'تعذّر تحميل الوظائف: ' + error.message;
+    alert('تعذّر تسجيل الخروج: ' + error.message);
     return;
   }
-
-  if (!data || data.length === 0) {
-    box.textContent = 'ما في وظائف منشورة حالياً.';
-    return;
-  }
-
-  box.innerHTML = data.map(job => `
-    <div style="background:#243247;padding:15px;margin:12px 0;border-radius:12px;text-align:right">
-      <h3>${job.title || ''}</h3>
-      <p>🏢 ${job.company || ''}</p>
-      <p>📍 ${job.location || ''}</p>
-      <p>💰 ${job.salary || 'غير محدد'}</p>
-      <p>${job.description || ''}</p>
-    </div>
-  `).join('');
+  currentUser = null;
+  currentProfile = null;
+  showPage('home');
+  await refreshAccount();
 }
-   async function publishJob() {
-  const title = document.getElementById('jobTitle').value;
-  const company = document.getElementById('jobCompany').value;
-  const location = document.getElementById('jobLocation').value;
-  const salary = document.getElementById('jobSalary').value;
-  const description = document.getElementById('jobDescription').value;
 
-  if (!title || !company || !location || !description) {
-    alert('يرجى تعبئة المعلومات المطلوبة');
+async function publishJob(event) {
+  event.preventDefault();
+
+  if (!currentUser) {
+    alert('يرجى تسجيل الدخول أولاً.');
+    showPage('account');
     return;
   }
 
-  const { data: { user } } = await supabaseClient.auth.getUser();
+  const job = {
+    title: document.getElementById('jobTitle').value.trim(),
+    company: document.getElementById('jobCompany').value.trim(),
+    description: document.getElementById('jobDescription').value.trim(),
+    category: document.getElementById('jobCategory').value,
+    location: document.getElementById('jobLocation').value.trim(),
+    salary: document.getElementById('jobSalary').value.trim()
+  };
 
-  if (!user) {
-    alert('يرجى تسجيل الدخول أولاً');
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from('jobs')
-    .insert([{
-      title,
-      company,
-      location,
-      salary,
-      description
-    }]);
+  const { error } = await supabaseClient.from('jobs').insert(job);
 
   if (error) {
     alert('تعذّر نشر الوظيفة: ' + error.message);
     return;
   }
 
-  alert('تم نشر الوظيفة بنجاح');
-  document.getElementById('jobForm').style.display = 'none';
-  loadJobs();
+  alert('تم نشر الوظيفة بنجاح!');
+  document.getElementById('jobForm').reset();
+  await loadJobs();
 }
-</script> 
+
+async function sendAdRequest(event) {
+  event.preventDefault();
+
+  const request = {
+    company_name: document.getElementById('adCompany').value.trim(),
+    ad_type: document.getElementById('adType').value,
+    duration: document.getElementById('adDuration').value,
+    contact: document.getElementById('adContact').value.trim()
+  };
+
+  const msg = document.getElementById('adMessage');
+  msg.textContent = 'جاري إرسال الطلب...';
+
+  const { error } = await supabaseClient
+    .from('advertising_requests').insert(request);
+
+  if (error) {
+    msg.textContent = 'تعذّر إرسال الطلب: ' + error.message;
+    return;
+  }
+
+  msg.textContent = 'تم إرسال طلب الإعلان بنجاح. شكراً لك!';
+  document.getElementById('adForm').reset();
+}
+
+async function loadAdminAds() {
+  const box = document.getElementById('adminAds');
+  const { data, error } = await supabaseClient
+    .from('advertising_requests')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    box.textContent = 'تعذّر تحميل الطلبات: ' + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    box.textContent = 'لا توجد طلبات إعلان حالياً.';
+    return;
+  }
+
+  box.innerHTML = data.map(ad => `
+    <div class="panel">
+      <strong>${escapeHTML(ad.company_name)}</strong>
+      <p>نوع الإعلان: ${escapeHTML(ad.ad_type)}</p>
+      <p>المدة: ${escapeHTML(ad.duration)}</p>
+      <p>التواصل: ${escapeHTML(ad.contact)}</p>
+      <p class="muted">${escapeHTML(ad.created_at || '')}</p>
+    </div>
+  `).join('');
+}
+
+async function initializeApp() {
+  const { data } = await supabaseClient.auth.getSession();
+  currentUser = data.session?.user || null;
+  await refreshAccount();
+  await loadJobs();
+
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    currentUser = session?.user || null;
+    setTimeout(() => refreshAccount(), 0);
+  });
+}
+
+initializeApp();
+</script>
 </body>
 </html>
