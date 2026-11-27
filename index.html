@@ -220,9 +220,15 @@ function renderJobs() {
   const list = document.getElementById('jobsList');
   const search = (document.getElementById('jobSearch').value || '').trim().toLowerCase();
   const category = document.getElementById('categoryFilter').value;
+
   const filtered = allJobs.filter(job => {
-    const text = [job.title, job.company, job.description, job.location].join(' ').toLowerCase();
-    return (!search || text.includes(search)) && (!category || job.category === category);
+    const text = [
+      job.title, job.company, job.description,
+      job.location, job.category
+    ].join(' ').toLowerCase();
+
+    return (!search || text.includes(search)) &&
+           (!category || job.category === category);
   });
 
   if (!filtered.length) {
@@ -240,6 +246,11 @@ function renderJobs() {
         <span class="tag">${escapeHTML(job.salary || 'غير محدد')}</span>
       </div>
       <p>${escapeHTML(job.description || '')}</p>
+
+      ${currentProfile?.is_admin === true ? `
+        <button class="secondary" onclick="editJob('${job.id}')">✏️ تعديل</button>
+        <button class="danger" onclick="deleteJob('${job.id}')">🗑️ حذف</button>
+      ` : ''}
     </div>
   `).join('');
 }
@@ -249,7 +260,59 @@ function escapeHTML(value) {
     '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
   })[c]);
 }
+async function deleteJob(id) {
+  if (!currentProfile?.is_admin) {
+    alert('غير مسموح لك بحذف الوظائف.');
+    return;
+  }
 
+  if (!confirm('هل أنت متأكد من حذف هذه الوظيفة؟')) return;
+
+  const { error } = await supabaseClient
+    .from('jobs')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    alert('تعذّر حذف الوظيفة: ' + error.message);
+    return;
+  }
+
+  alert('تم حذف الوظيفة بنجاح.');
+  await loadJobs();
+}
+
+async function editJob(id) {
+  if (!currentProfile?.is_admin) {
+    alert('غير مسموح لك بتعديل الوظائف.');
+    return;
+  }
+
+  const job = allJobs.find(item => String(item.id) === String(id));
+  if (!job) return;
+
+  const title = prompt('اسم الوظيفة:', job.title || '');
+  if (title === null) return;
+
+  const company = prompt('اسم الشركة:', job.company || '');
+  if (company === null) return;
+
+  const description = prompt('وصف الوظيفة:', job.description || '');
+  if (description === null) return;
+
+  const { error } = await supabaseClient
+    .from('jobs')
+    .update({ title, company, description })
+    .eq('id', id);
+
+  if (error) {
+    alert('تعذّر تعديل الوظيفة: ' + error.message);
+    return;
+  }
+
+  alert('تم تعديل الوظيفة بنجاح.');
+  await loadJobs();
+}
 async function signup() {
   const name = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
